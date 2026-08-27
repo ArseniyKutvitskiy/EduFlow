@@ -1187,6 +1187,44 @@ footer {
 .gradedWork { display: flex; align-items: flex-start; flex-direction: column; gap: 4px; padding: 10px 12px; border-radius: 8px; background: #71d7a414; border: 1px solid #71d7a433; color: #aef2c7; }
 .gradedWork p { margin: 0; color: #c4cce0; }
 
+/* Форма публикации домашнего задания */
+.taskDesk .assignmentCreate {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.taskDesk .assignmentCreate > div:first-child,
+.taskDesk .assignmentCreate .selectedGroup,
+.taskDesk .assignmentCreate .btn {
+  grid-column: auto;
+}
+.assignmentCourseRow,
+.assignmentDetailsRow,
+.assignmentOptionsRow {
+  display: grid;
+  gap: 14px;
+  width: 100%;
+}
+.assignmentCourseRow { grid-template-columns: minmax(290px, .9fr) minmax(360px, 1.7fr); }
+.assignmentDetailsRow { grid-template-columns: minmax(300px, .85fr) minmax(460px, 1.65fr); }
+.assignmentOptionsRow { grid-template-columns: 220px 195px minmax(260px, 1fr); align-items: end; }
+.assignmentCreate .assignmentCourseRow .fieldLabel,
+.assignmentCreate .assignmentDetailsRow .fieldLabel { gap: 7px; }
+.assignmentCreate .fieldLabel { color: #c2c9e1; font-size: 11px; }
+.assignmentCreate .fieldLabel > span { color: #8f9ab8; font-size: 10px; font-weight: 500; }
+.assignmentCreate .assignmentDetailsRow textarea { min-height: 96px; }
+.assignmentDeadline input { font-size: 16px; font-weight: 800; }
+.assignmentOptionsRow .scoreLimit { min-height: 76px; padding: 11px 13px; }
+.assignmentOptionsRow .scoreLimit b { font-size: 18px; }
+.assignmentOptionsRow .assignmentFilePick { min-height: 42px; box-sizing: border-box; }
+.taskDesk .assignmentCreate .assignmentFilePick { grid-column: auto; }
+@media (max-width: 900px) {
+  .assignmentCourseRow,
+  .assignmentDetailsRow,
+  .assignmentOptionsRow { grid-template-columns: 1fr; }
+  .assignmentOptionsRow { align-items: stretch; }
+}
+
 /* Светлый портал студента */
 #root:has(.studentPortal) { background: #f3f5fb; }
 #root:has(.studentPortal) main { background: #f3f5fb; }

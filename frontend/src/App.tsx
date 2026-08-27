@@ -580,7 +580,7 @@ function TeacherDesk({ courses, token, open, say, user, go, taskOnly = false }: 
       moduleId: "",
       title: "",
       description: "",
-      daysToComplete: "7",
+      daysToComplete: "",
     });
   const load = () =>
     fetch(api + "/teacher/submissions", { headers: H(token) })
@@ -658,7 +658,7 @@ function TeacherDesk({ courses, token, open, say, user, go, taskOnly = false }: 
                 moduleId: "",
                 title: "",
                 description: "",
-                daysToComplete: "7",
+                daysToComplete: "",
               });
               setAssignmentFile(null);
               loadPublished();
@@ -669,44 +669,59 @@ function TeacherDesk({ courses, token, open, say, user, go, taskOnly = false }: 
             <span>НОВОЕ ДОМАШНЕЕ ЗАДАНИЕ</span>
             <h2>Поставить задание студентам</h2>
           </div>
-          <select
-            required
-            value={assignment.courseId}
-            onChange={(e) =>
-              setAssignment({ ...assignment, courseId: e.target.value, moduleId: "" })
-            }
-          >
-            <option value="">Выберите курс</option>
-            {courses.map((c: any) => (
-              <option value={c.id}>{c.title} — группа: {c.students?.length || 0} студентов</option>
-            ))}
-          </select>
-          <select required disabled={!assignment.courseId} value={assignment.moduleId} onChange={(e) => setAssignment({ ...assignment, moduleId: e.target.value })}>
-            <option value="">{assignment.courseId ? "Выберите урок из программы" : "Сначала выберите курс"}</option>
-            {courses.find((c:any) => String(c.id) === assignment.courseId)?.modules?.map((m:any) => <option value={m.id}>Урок {m.position}: {m.title}</option>)}
-          </select>
-          {assignment.courseId && <div className="selectedGroup"><b>Задание получат:</b> {courses.find((c:any) => String(c.id) === assignment.courseId)?.students?.length ? courses.find((c:any) => String(c.id) === assignment.courseId).students.map((s:any) => s.name).join(", ") : "в группе пока нет студентов"}</div>}
-          <input
-            required
-            placeholder="Название задания"
-            value={assignment.title}
-            onChange={(e) =>
-              setAssignment({ ...assignment, title: e.target.value })
-            }
-          />
-          <textarea
-            required
-            placeholder="Подробное описание задачи и критерии выполнения"
-            value={assignment.description}
-            onChange={(e) =>
-              setAssignment({ ...assignment, description: e.target.value })
-            }
-          />
-          <div>
-            <label className="fieldLabel">Срок выполнения (дней, максимум 10)<input required type="number" min="1" max="10" value={assignment.daysToComplete} onChange={(e) => setAssignment({ ...assignment, daysToComplete: e.target.value })}/></label>
-            <div className="scoreLimit"><small>МАКСИМАЛЬНЫЙ БАЛЛ</small><b>10</b><span>единая шкала оценки</span></div>
+          <div className="assignmentCourseRow">
+            <label className="fieldLabel">Курс
+              <select
+                required
+                value={assignment.courseId}
+                onChange={(e) =>
+                  setAssignment({ ...assignment, courseId: e.target.value, moduleId: "" })
+                }
+              >
+                <option value="">Выберите курс</option>
+                {courses.map((c: any) => (
+                  <option value={c.id}>{c.title} — группа: {c.students?.length || 0} студентов</option>
+                ))}
+              </select>
+            </label>
+            <label className="fieldLabel">Урок
+              <select required disabled={!assignment.courseId} value={assignment.moduleId} onChange={(e) => setAssignment({ ...assignment, moduleId: e.target.value })}>
+                <option value="">{assignment.courseId ? "Выберите урок из программы" : "Сначала выберите курс"}</option>
+                {courses.find((c:any) => String(c.id) === assignment.courseId)?.modules?.map((m:any) => <option value={m.id}>Урок {m.position}: {m.title}</option>)}
+              </select>
+            </label>
           </div>
-          <label className="assignmentFilePick">{assignmentFile ? assignmentFile.name : "Прикрепить файл к заданию (PDF / Word)"}<input type="file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" onChange={e => setAssignmentFile(e.target.files?.[0] || null)}/></label>
+          {assignment.courseId && <div className="selectedGroup"><b>Задание получат:</b> {courses.find((c:any) => String(c.id) === assignment.courseId)?.students?.length ? courses.find((c:any) => String(c.id) === assignment.courseId).students.map((s:any) => s.name).join(", ") : "в группе пока нет студентов"}</div>}
+          <div className="assignmentDetailsRow">
+            <label className="fieldLabel">Название задания
+              <input
+                required
+                placeholder="Например: анализ пользовательского сценария"
+                value={assignment.title}
+                onChange={(e) =>
+                  setAssignment({ ...assignment, title: e.target.value })
+                }
+              />
+            </label>
+            <label className="fieldLabel">Описание и критерии выполнения
+              <textarea
+                required
+                placeholder="Опишите результат, требования к работе и критерии проверки"
+                value={assignment.description}
+                onChange={(e) =>
+                  setAssignment({ ...assignment, description: e.target.value })
+                }
+              />
+            </label>
+          </div>
+          <div className="assignmentOptionsRow">
+            <label className="fieldLabel assignmentDeadline">Срок выполнения
+              <span>От 1 до 10 дней после публикации</span>
+              <input required type="number" min="1" max="10" placeholder="Например, 7" value={assignment.daysToComplete} onChange={(e) => setAssignment({ ...assignment, daysToComplete: e.target.value })}/>
+            </label>
+            <div className="scoreLimit"><small>МАКСИМАЛЬНАЯ ОЦЕНКА</small><b>10 баллов</b><span>единая шкала оценки</span></div>
+            <label className="assignmentFilePick">{assignmentFile ? assignmentFile.name : "Прикрепить файл (PDF / Word)"}<input type="file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" onChange={e => setAssignmentFile(e.target.files?.[0] || null)}/></label>
+          </div>
           <button className="btn">Опубликовать задание</button>
         </form>}
         {taskOnly && <div className={"teacherLayout teacherTab-" + teacherTab}>
