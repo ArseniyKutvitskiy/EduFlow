@@ -1,0 +1,2 @@
+/* Последняя коррекция компоновки сводки администратора. */
+.adminHub .adminPulse>div{grid-template-columns:repeat(3,1fr)!important;grid-template-rows:auto auto!important;grid-auto-flow:column!important;align-items:start!important}.adminHub .adminLog>div:first-child{display:block!important}.adminHub .adminLog>div:first-child h2{margin:7px 0 13px!important;text-align:left!important}.adminHub .adminLog>p{display:block!important;margin:0!important;text-align:left!important}
